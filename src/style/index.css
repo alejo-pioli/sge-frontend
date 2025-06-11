@@ -1,0 +1,22 @@
+.root-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    
+    & > .sidebar {
+        position: relative;
+        height: 100vh;
+        
+        & > .arania {
+            position: absolute;
+            width: 80%;
+            left: -15%;
+            bottom: -5%;
+            rotate: 25deg;
+            opacity: .1;
+            z-index: -1;
+        }
+    }
+
+    & > .profile {
+    }
+}
