@@ -30,8 +30,8 @@ export default function Login() {
                         defaultValue=""
                         required>
                         <option disabled value="">Seleccione rol...</option>
-                        <option value={true}>Alumno</option>
-                        <option value={false}>Docente</option>
+                        <option value="false">Alumno</option>
+                        <option value="true">Docente</option>
                     </Form.Select>
                 </Form.Group>
 
