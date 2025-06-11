@@ -1,6 +1,6 @@
 import { Card, Nav } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
-import arania from './style/Araña.svg'
+import arania from './assets/Araña.svg'
 
 export default function RootLayout() {
     
