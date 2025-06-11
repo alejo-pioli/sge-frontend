@@ -85,7 +85,7 @@ export default function CrearAlumno() {
                                 defaultValue=""
                                 required>
                                 <option disabled value="">Seleccione carrera...</option>
-                                <option value="K">Ingeniería en Sistemas de Información</option>
+                                <option value="A">Ingeniería en Sistemas de Información</option>
                                 <option value="B">Ingeniería Química</option>
                                 <option value="C">Ingeniería Electrónica</option>
                                 <option value="D">Ingeniería Electromecánica</option>
