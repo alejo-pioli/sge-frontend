@@ -37,7 +37,7 @@ export default function CrearAlumno() {
                             <Form.Control
                                 type="text"
                                 name="name"
-                                placeholder="Ingrese nombre"
+                                placeholder="Fulano"
                                 required />
                         </Form.Group>
                     </Col>
@@ -47,33 +47,36 @@ export default function CrearAlumno() {
                             <Form.Control
                                 type="text"
                                 name="surname"
-                                placeholder="Ingrese apellido"
+                                placeholder="de Tal"
                                 required />
                         </Form.Group>
                     </Col>
                 </Row>
 
-                <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        name="email"
-                        placeholder="Ingrese email"
-                        required />
-                </Form.Group>
-
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="dni">
-                            <Form.Label>DNI</Form.Label>
+                        <Form.Group className="mb-3" controlId="email">
+                            <Form.Label>Email</Form.Label>
                             <Form.Control
-                                max="100000000"
-                                type="number"
-                                name="dni"
-                                placeholder="Ingrese DNI"
+                                type="email"
+                                name="email"
+                                placeholder="fulanodetal2000@correo.com"
                                 required />
                         </Form.Group>
                     </Col>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="phone">
+                            <Form.Label>Teléfono</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="phone"
+                                placeholder="0800 888888"
+                                required />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="career">
                             <Form.Label>Carrera</Form.Label>
@@ -81,13 +84,24 @@ export default function CrearAlumno() {
                                 name="career"
                                 defaultValue=""
                                 required>
-                                <option disabled value="">Seleccione carrera</option>
+                                <option disabled value="">Seleccione carrera...</option>
                                 <option value="K">Ingeniería en Sistemas de Información</option>
                                 <option value="B">Ingeniería Química</option>
                                 <option value="C">Ingeniería Electrónica</option>
                                 <option value="D">Ingeniería Electromecánica</option>
                                 <option value="E">Ingeniería Industrial</option>
                             </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="dni">
+                            <Form.Label>DNI</Form.Label>
+                            <Form.Control
+                                max="100000000"
+                                type="number"
+                                name="dni"
+                                placeholder="40000000"
+                                required />
                         </Form.Group>
                     </Col>
                 </Row>

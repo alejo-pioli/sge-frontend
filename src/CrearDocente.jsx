@@ -37,7 +37,7 @@ export default function CrearDocente() {
                             <Form.Control
                                 type="text"
                                 name="name"
-                                placeholder="Ingrese nombre"
+                                placeholder="Fulano"
                                 required />
                         </Form.Group>
                     </Col>
@@ -47,30 +47,48 @@ export default function CrearDocente() {
                             <Form.Control
                                 type="text"
                                 name="surname"
-                                placeholder="Ingrese apellido"
+                                placeholder="de Tal"
                                 required />
                         </Form.Group>
                     </Col>
                 </Row>
 
-                <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        name="email"
-                        placeholder="Ingrese email"
-                        required />
-                </Form.Group>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="email">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                placeholder="fulanodetal2000@correo.com"
+                                required />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="phone">
+                            <Form.Label>Teléfono</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="phone"
+                                placeholder="0800 888888"
+                                required />
+                        </Form.Group>
+                    </Col>
+                </Row>
 
-                <Form.Group className="mb-3" controlId="dni">
-                    <Form.Label>DNI</Form.Label>
-                    <Form.Control
-                        max="100000000"
-                        type="number"
-                        name="dni"
-                        placeholder="Ingrese DNI"
-                        required />
-                </Form.Group>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="dni">
+                            <Form.Label>DNI</Form.Label>
+                            <Form.Control
+                                max="100000000"
+                                type="number"
+                                name="dni"
+                                placeholder="40000000"
+                                required />
+                        </Form.Group>
+                    </Col>
+                </Row>
 
                 <Button variant="primary" type="submit">
                     Enviar
