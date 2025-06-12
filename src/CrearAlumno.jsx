@@ -16,6 +16,8 @@ export default function CrearAlumno() {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
+        data.dni = parseInt(data.dni)
+
         try {
             const response = await axios.post("http://localhost:3000/api/alumnos", data, {headers: {
       "Authorization": "Bearer " + localStorage.getItem("token")
@@ -56,12 +58,13 @@ export default function CrearAlumno() {
 
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="email">
-                            <Form.Label>Email</Form.Label>
+                        <Form.Group className="mb-3" controlId="dni">
+                            <Form.Label>DNI</Form.Label>
                             <Form.Control
-                                type="email"
-                                name="email"
-                                placeholder="fulanodetal2000@correo.com"
+                                max="100000000"
+                                type="number"
+                                name="dni"
+                                placeholder="40000000"
                                 required />
                         </Form.Group>
                     </Col>
@@ -94,15 +97,16 @@ export default function CrearAlumno() {
                             </Form.Select>
                         </Form.Group>
                     </Col>
+                </Row>
+
+                <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="dni">
-                            <Form.Label>DNI</Form.Label>
+                        <Form.Group className="mb-3" controlId="email">
+                            <Form.Label>Email</Form.Label>
                             <Form.Control
-                                min="1"
-                                max="100000000"
-                                type="number"
-                                name="dni"
-                                placeholder="40000000"
+                                type="email"
+                                name="email"
+                                placeholder="fulanodetal2000@correo.com"
                                 required />
                         </Form.Group>
                     </Col>
@@ -111,7 +115,7 @@ export default function CrearAlumno() {
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Contraseña</Form.Label>
                     <Form.Control
-                        type="text"
+                        type="password"
                         name="password"
                         placeholder="hola123"
                         required />
