@@ -16,6 +16,8 @@ export default function CrearAlumno() {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
+        data.dni = parseInt(data.dni)
+
         try {
             const response = await axios.post("http://localhost:3000/api/alumnos", data, {headers: {
       "Authorization": "Bearer " + localStorage.getItem("token")
@@ -49,32 +51,6 @@ export default function CrearAlumno() {
                                 type="text"
                                 name="surname"
                                 placeholder="de Tal"
-                                required />
-                        </Form.Group>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col>
-                        <Form.Group className="mb-3" controlId="email">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                name="email"
-                                placeholder="fulanodetal2000@correo.com"
-                                required />
-                        </Form.Group>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col>
-                        <Form.Group className="mb-3" controlId="password">
-                            <Form.Label>Contraseña</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password"
-                                placeholder=""
                                 required />
                         </Form.Group>
                     </Col>
@@ -123,10 +99,23 @@ export default function CrearAlumno() {
                     </Col>
                 </Row>
 
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="email">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                placeholder="fulanodetal2000@correo.com"
+                                required />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Contraseña</Form.Label>
                     <Form.Control
-                        type="text"
+                        type="password"
                         name="password"
                         placeholder="hola123"
                         required />
