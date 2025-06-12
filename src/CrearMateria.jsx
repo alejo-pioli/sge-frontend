@@ -21,6 +21,9 @@ export default function CrearMateria() {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
+        data.teacherID = parseInt(data.teacherID)
+        data.duration = parseInt(data.duration)
+
         try {
             const response = await axios.post("http://localhost:3000/api/materias", data);
             console.log('Success:', response.data);
