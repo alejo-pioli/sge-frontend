@@ -19,11 +19,10 @@ export default function CrearDocente() {
         try {
             const response = await axios.post("http://localhost:3000/api/docentes", data);
             console.log('Success:', response.data);
+            e.target.reset()
         } catch (error) {
             console.error('Error:', error);
         }
-
-        e.target.reset()
     };
 
     return (
@@ -81,6 +80,7 @@ export default function CrearDocente() {
                         <Form.Group className="mb-3" controlId="dni">
                             <Form.Label>DNI</Form.Label>
                             <Form.Control
+                                min="1"
                                 max="100000000"
                                 type="number"
                                 name="dni"
@@ -89,6 +89,15 @@ export default function CrearDocente() {
                         </Form.Group>
                     </Col>
                 </Row>
+
+                <Form.Group className="mb-3" controlId="password">
+                    <Form.Label>Contraseña</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="password"
+                        placeholder="hola123"
+                        required />
+                </Form.Group>
 
                 <Button variant="primary" type="submit">
                     Enviar

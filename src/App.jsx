@@ -15,7 +15,9 @@ function App() {
       params = ""
     }
 
-    axios.get(url + params)
+    axios.get(url + params, {headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token")
+    }})
       .then((data) => {
         console.log(data.data)
         setAlumnos(data.data)
