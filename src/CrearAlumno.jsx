@@ -65,6 +65,33 @@ export default function CrearAlumno() {
                                 required />
                         </Form.Group>
                     </Col>
+                </Row>
+
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="password">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="password"
+                                placeholder=""
+                                required />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="dni">
+                            <Form.Label>DNI</Form.Label>
+                            <Form.Control
+                                max="100000000"
+                                type="number"
+                                name="dni"
+                                placeholder="40000000"
+                                required />
+                        </Form.Group>
+                    </Col>
                     <Col>
                         <Form.Group className="mb-3" controlId="phone">
                             <Form.Label>Teléfono</Form.Label>
@@ -92,18 +119,6 @@ export default function CrearAlumno() {
                                 <option value="D">Ingeniería Electromecánica</option>
                                 <option value="E">Ingeniería Industrial</option>
                             </Form.Select>
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group className="mb-3" controlId="dni">
-                            <Form.Label>DNI</Form.Label>
-                            <Form.Control
-                                min="1"
-                                max="100000000"
-                                type="number"
-                                name="dni"
-                                placeholder="40000000"
-                                required />
                         </Form.Group>
                     </Col>
                 </Row>

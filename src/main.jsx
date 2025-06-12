@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
+import Alumnos from './Alumnos.jsx'
 import CrearAlumno from './CrearAlumno.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import CrearDocente from './CrearDocente.jsx'
