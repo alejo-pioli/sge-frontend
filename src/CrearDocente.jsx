@@ -16,6 +16,8 @@ export default function CrearDocente() {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
+        data.dni = parseInt(data.dni)
+
         try {
             const response = await axios.post("http://localhost:3000/api/docentes", data);
             console.log('Success:', response.data);
