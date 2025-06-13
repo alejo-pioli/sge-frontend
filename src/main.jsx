@@ -9,11 +9,13 @@ import './style/index.css'
 import Login from './Login.jsx'
 import CrearMateria from './CrearMateria.jsx'
 import InscripcionAMateria from './InscripcionAMateria.jsx'
+import Materias from './Materias.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/", element: <RootLayout />, children: [
       { path: "/", element: <App /> },
+      { path: "/materias", element: <Materias /> },
       { path: "/crear-alumno", element: <CrearAlumno /> },
       { path: "/crear-docente", element: <CrearDocente /> },
       { path: "/crear-materia", element: <CrearMateria /> },
