@@ -4,10 +4,12 @@ import { Button, Card, CardBody, CardHeader } from 'react-bootstrap'
 import { use } from 'react'
 import { SubjectSchema, TeacherSchema } from './lib/schema'
 import { z } from 'zod/v4'
-import { getMaterias, useAPI } from './lib/api'
+import { getLoginInfo, getMaterias, useAPI } from './lib/api'
 
 export default function Materias() {
-    const materias = useAPI(getMaterias)
+    const login = getLoginInfo()
+
+    const materias = useAPI(getMaterias, login.id, login.role === "teacher")
 
     return (
         <>

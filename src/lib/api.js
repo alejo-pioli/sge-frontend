@@ -103,4 +103,12 @@ const SubjectWithTeacher = SubjectSchema.extend({
     Teacher: TeacherSchema
 })
 
-export const getMaterias = () => apiGet("/materias").then((res) => z.array(SubjectWithTeacher).parse(res.data))
+/**
+ * @param {number} id identificador del usuario
+ * @param {boolean} isTeacher si es un docente
+ */
+export async function getMaterias(id, isTeacher) {
+    const { data } = await apiGet("/materias" + (isTeacher ? "?docente=" + id : "?alumno=" + id))
+
+    return z.array(SubjectWithTeacher).parse(data)
+}
