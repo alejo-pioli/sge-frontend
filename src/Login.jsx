@@ -2,6 +2,8 @@ import { Form, Button, Row, Col } from "react-bootstrap"
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import { postLogin } from "./lib/api";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 export default function Login() {
 
@@ -21,11 +23,23 @@ export default function Login() {
                 formData.get("email"),
                 formData.get("password"),
                 formData.get("isTeacher") === "true",
-            )
-            location.reload()
+            );
+
+            toast.success("Inicio sesion exitoso", {
+                position: "top-right",
+                autoClose: 5000
+            });
+
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+
         } catch (error) {
             console.error(error)
-            alert("Los datos de usuario, contraseña o rol no son correctos")
+            toast.error("Usuario, contraseña o rol incorrectos", {
+                position: "top-right",
+                autoClose: 5000
+            });
         }
 
     }
@@ -69,6 +83,7 @@ export default function Login() {
                 </Button>
             </Form>
             <Link to={"/"}><Button variant="secondary">Menú</Button></Link>
+            <ToastContainer draggable={false} />
         </div>
     )
 }
