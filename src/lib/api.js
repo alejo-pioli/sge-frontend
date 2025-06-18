@@ -2,7 +2,7 @@
 import axios from "axios"
 import { useEffect } from "react"
 import { z } from "zod/v4"
-import { LoginResult, StudentSchema, SubjectSchema, TeacherSchema } from "./schema"
+import { AbsenceSchema, GradeSchema, LoginResult, StudentSchema, SubjectSchema, TeacherSchema } from "./schema"
 import { useState } from "react"
 
 const TOKEN_KEY = "token"
@@ -172,7 +172,7 @@ export async function getInasistencias(subjectID, studentID) {
     }
     const { data } = await apiGet(`/inasistencias?` + params.toString())
 
-    return PostResult.parse(data)
+    return z.array(AbsenceSchema).parse(data)
 }
 
 /**
@@ -188,7 +188,7 @@ export async function getCalificaciones(subjectID, studentID) {
     }
     const { data } = await apiGet(`/calificaciones?` + params.toString())
 
-    return PostResult.parse(data)
+    return z.array(GradeSchema).parse(data)
 }
 
 /**
