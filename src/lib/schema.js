@@ -71,3 +71,19 @@ export const SubjectSchema = z.object({
     schedule: z.string(),
     teacherID: z.int(),
 })
+
+/** 
+ * @typedef {z.infer<typeof LoginResult>} LoginResult
+ */
+export const LoginResult = z.object({
+    /**todo está bien */
+    ok: z.boolean(), 
+    /** el JWT */
+    token: z.string(), 
+    /** tiempo hasta la expiración en segundos */
+    expiresIn: z.number(), 
+    /** si tiene un rol "teacher" o "student" */
+    role: z.string(), 
+    /** el identificador del usuario */
+    id: z.number(), 
+})
