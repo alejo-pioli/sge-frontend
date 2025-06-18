@@ -12,15 +12,22 @@ const ROLE_KEY = "role"
 
 /**
  * Devuelve el token si todavía no expiro
- * @returns {string | null} el token
+ * @returns el token
  */
-export function getJWT() {
+export function getLoginInfo() {
     const expiry = parseInt(localStorage.getItem(EXPIRY_KEY) ?? "0")
     const now = new Date().getTime()
-    if (now >= expiry) {
+    const token = localStorage.getItem(TOKEN_KEY)
+
+    if (!token || now >= expiry) {
         return null
     }
-    return localStorage.getItem(TOKEN_KEY)
+
+    return {
+        token,
+        id: parseInt(localStorage.getItem(TOKEN_KEY) ?? "0"),
+        role: localStorage.getItem(ROLE_KEY) ?? "student",
+    }
 }
 
 /**
@@ -31,7 +38,7 @@ export function getJWT() {
 export async function apiGet(path, auth = true) {
     return await axios.get("http://localhost:3000/api" + path, {
         headers: auth ? {
-            "Authorization": "Bearer " + getJWT()
+            "Authorization": "Bearer " + getLoginInfo()?.token
         } : {}
     })
 }
@@ -45,7 +52,7 @@ export async function apiGet(path, auth = true) {
 export async function apiPost(path, data, auth = true) {
     return await axios.post("http://localhost:3000/api" + path, data, {
         headers: auth ? {
-            "Authorization": "Bearer " + getJWT()
+            "Authorization": "Bearer " + getLoginInfo()?.token
         } : {}
     })
 }
