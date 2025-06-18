@@ -4,6 +4,7 @@ import arania from './assets/Araña.svg'
 import { getAlumno, getLoginInfo, useAPI, getDocente } from "./lib/api";
 import Login from "./Login";
 import { Link } from "react-router-dom";
+import { AxiosError } from "axios";
 
 export default function RootLayout() {
     const login = getLoginInfo()
@@ -81,4 +82,34 @@ export default function RootLayout() {
                 </div>
             </div>
     )
+}
+
+
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { loginError: false };
+    }
+
+    static getDerivedStateFromError(error) {
+        return { loginError: error instanceof AxiosError && error.status === 401};
+    }
+
+    componentDidCatch(error, info) {
+        
+    }
+
+    render() {
+        if (this.state.loginError) {
+            return (
+                <div className="root-layout">
+                    <div className="full-viewport container pt-3">
+                        <Login />
+                    </div>
+                </div>
+            );
+        }
+
+        return this.props.children;
+    }
 }

@@ -2,7 +2,7 @@
 import axios from "axios"
 import { useEffect } from "react"
 import { z } from "zod/v4"
-import { LoginResult, SubjectSchema, TeacherSchema } from "./schema"
+import { LoginResult, StudentSchema, SubjectSchema, TeacherSchema } from "./schema"
 import { useState } from "react"
 
 const TOKEN_KEY = "token"
@@ -119,6 +119,15 @@ export async function getMaterias(id, isTeacher) {
 }
 
 /**
+ * @param {number} id identificador de la materia
+ */
+export async function getMateria(id) {
+    const { data } = await apiGet("/materias/" + id)
+
+    return SubjectWithTeacher.parse(data)
+}
+
+/**
  * 
  * @param {number} id 
  */
@@ -126,6 +135,74 @@ export async function getAlumno(id) {
     const { data } = await apiGet(`/alumnos/${id}`)
 
     return data
+}
+
+/**
+ * @param {number} id id de la materia
+ */
+export async function getAlumnosInscriptos(id) {
+    const { data } = await apiGet(`/alumnos/?materia=${id}`)
+
+    return z.array(StudentSchema).parse(data)
+}
+
+
+/**
+ * @param {number} subjectID 
+ * @param {number} studentID 
+ */
+export async function postInasistencia(subjectID, studentID) {
+    const { data } = await apiPost(`/inasistencias`, {
+        studentID, subjectID, date: new Date().toISOString(), justified: false
+    })
+
+    return PostResult.parse(data)
+}
+
+/**
+ * @param {number} subjectID 
+ * @param {number=} studentID 
+ */
+export async function getInasistencias(subjectID, studentID) {
+    const params = new URLSearchParams({
+        materia: subjectID.toString(),
+    })
+    if (studentID) {
+        params.set("alumno", "" + studentID)
+    }
+    const { data } = await apiGet(`/inasistencias?` + params.toString())
+
+    return PostResult.parse(data)
+}
+
+/**
+ * @param {number} subjectID 
+ * @param {number=} studentID 
+ */
+export async function getCalificaciones(subjectID, studentID) {
+    const params = new URLSearchParams({
+        materia: subjectID.toString(),
+    })
+    if (studentID) {
+        params.set("alumno", "" + studentID)
+    }
+    const { data } = await apiGet(`/calificaciones?` + params.toString())
+
+    return PostResult.parse(data)
+}
+
+/**
+ * @param {number} subjectID 
+ * @param {number} studentID 
+ * @param {string} instance 
+ * @param {number} grade 
+ */
+export async function postCalificacion(subjectID, studentID, instance, grade) {
+    const { data } = await apiPost(`/calificaciones`, {
+        studentID, subjectID, instance, grade
+    })
+
+    return PostResult.parse(data)
 }
 
 /**
