@@ -65,7 +65,7 @@ export async function apiPost(path, data, auth = true) {
  * @returns {R | null}
  */
 export function useAPI(fn, ...args) {
-    const [value, setValue] = useState(/** @type {R | null} */ (null))
+    const [value, setValue] = useState(/** @type {R | null} */(null))
 
     useEffect(() => {
         setValue(null)
@@ -86,7 +86,7 @@ export function useAPI(fn, ...args) {
  */
 export async function postLogin(email, password, isTeacher) {
     const data = await apiPost("/auth/login", { email, password, isTeacher }, false).then((res) => LoginResult.parse(res.data))
-    
+
     if (data.ok) {
         localStorage.setItem(TOKEN_KEY, data.token)
         localStorage.setItem(EXPIRY_KEY, "" + (new Date().getTime() + data.expiresIn * 1000))
@@ -111,4 +111,31 @@ export async function getMaterias(id, isTeacher) {
     const { data } = await apiGet("/materias" + (isTeacher ? "?docente=" + id : "?alumno=" + id))
 
     return z.array(SubjectWithTeacher).parse(data)
+}
+
+/**
+ * 
+ * @param {number} id 
+ */
+export async function getAlumno(id) {
+    const { data } = await apiGet(`/alumnos/${id}`)
+
+    return data
+}
+
+/**
+ * 
+ * @param {number} id 
+ */
+export async function getDocente(id) {
+    const { data } = await apiGet(`/docentes/${id}`)
+
+    return data
+}
+
+/**
+ * @param {any} data
+ */
+export async function postDocente(data){
+    return await apiPost("/docentes", data)
 }
