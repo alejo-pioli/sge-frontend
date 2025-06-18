@@ -95,7 +95,7 @@ export default function CrearDocente() {
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Contraseña</Form.Label>
                     <Form.Control
-                        type="text"
+                        type="password"
                         name="password"
                         placeholder="hola123"
                         required />
