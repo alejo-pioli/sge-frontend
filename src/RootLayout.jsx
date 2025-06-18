@@ -41,7 +41,7 @@ export default function RootLayout() {
                         <Nav.Link as={Link} to={"/materias"}>
                             Materias
                         </Nav.Link>
-                        <Nav.Link>
+                        <Nav.Link as={Link} to={"/crear-materia"}>
                             Crear materia
                         </Nav.Link>
                         <div className="flex-grow-1"></div>
@@ -80,8 +80,5 @@ export default function RootLayout() {
                     <Outlet />
                 </div>
             </div>
-
-
-
     )
 }
