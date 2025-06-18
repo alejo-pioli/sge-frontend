@@ -1,9 +1,4 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Button, Card, CardBody, CardHeader } from 'react-bootstrap'
-import { use } from 'react'
-import { SubjectSchema, TeacherSchema } from './lib/schema'
-import { z } from 'zod/v4'
+import { Card, CardBody, CardHeader, Container } from 'react-bootstrap'
 import { getLoginInfo, getMaterias, useAPI } from './lib/api'
 
 export default function Materias() {
@@ -14,19 +9,22 @@ export default function Materias() {
     return (
         <>
             <h1>Tus materias</h1>
-            {materias && materias.length > 0 &&
-                materias.map((m) => (
-                    <Card>
-                        <CardHeader>
-                            <h4>
-                                {m.name}
-                            </h4>
-                        </CardHeader>
-                        <CardBody>
-                        <p><strong>Profe:</strong> {m.Teacher.name} {m.Teacher.surname}</p>
-                        </CardBody>
-                    </Card>
-                ))}
+            <Container fluid className="materias">
+                {materias && materias.length > 0 && (
+                    materias.map((m) => (
+                        <Card key={m.id}>
+                            <CardHeader>
+                                <h4 className='m-0'>
+                                    {m.name}
+                                </h4>
+                            </CardHeader>
+                            <CardBody>
+                                <strong>Profesor:</strong> {m.Teacher.name} {m.Teacher.surname}
+                            </CardBody>
+                        </Card>
+                    ))
+                )}
+            </Container>
         </>
     )
 }

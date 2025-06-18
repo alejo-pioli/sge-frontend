@@ -20,7 +20,11 @@
     & > .full-viewport {
         grid-column: span 2;
     }
+}
 
-    & > .profile {
-    }
+.materias {
+    display: grid;
+    padding-top: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(20rem,1fr));
+    gap: 1rem;
 }

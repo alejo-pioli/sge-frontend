@@ -103,6 +103,11 @@ const SubjectWithTeacher = SubjectSchema.extend({
     Teacher: TeacherSchema
 })
 
+const PostResult = z.object({
+    ok: z.boolean(),
+    id: z.number(),
+})
+
 /**
  * @param {number} id identificador del usuario
  * @param {boolean} isTeacher si es un docente
@@ -138,4 +143,29 @@ export async function getDocente(id) {
  */
 export async function postDocente(data){
     return await apiPost("/docentes", data)
+}
+
+export async function getTodasLasMaterias() {
+    const { data } = await apiGet("/materias")
+
+    return z.array(SubjectWithTeacher).parse(data)
+}
+
+/**
+ * @param {number} studentID identificador del usuario
+ * @param {number} subjectID identificador de la materia
+ */
+export async function postInscripcion(studentID, subjectID) {
+    const { data } = await apiPost("/inscripciones", { studentID, subjectID})
+
+    return PostResult.parse(data)
+}
+
+/**
+ * @param {SubjectSchema} materia la materia
+ */
+export async function postMateria(materia) {
+    const { data } = await apiPost("/materias", materia)
+
+    return PostResult.parse(data)
 }

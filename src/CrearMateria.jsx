@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Form, Row, Col, Button, InputGroup } from "react-bootstrap"
+import { postMateria } from "./lib/api"
 
 export default function CrearMateria() {
 
@@ -25,8 +26,8 @@ export default function CrearMateria() {
         data.duration = parseInt(data.duration)
 
         try {
-            const response = await axios.post("http://localhost:3000/api/materias", data);
-            console.log('Success:', response.data);
+            const res = await postMateria(data)
+            console.log('Success:', res.id);
             e.target.reset()
         } catch (error) {
             console.error('Error:', error);
