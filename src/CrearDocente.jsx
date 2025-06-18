@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { postDocente } from './lib/api';
 
 export default function CrearDocente() {
 
@@ -18,13 +19,8 @@ export default function CrearDocente() {
 
         data.dni = parseInt(data.dni)
 
-        try {
-            const response = await axios.post("http://localhost:3000/api/docentes", data);
-            console.log('Success:', response.data);
-            e.target.reset()
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        const datos = await postDocente(data)
+        console.log(datos)
     };
 
     return (
