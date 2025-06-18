@@ -1,10 +1,11 @@
 import { Form, Button, Row, Col } from "react-bootstrap"
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
+import { postLogin } from "./lib/api";
 
 export default function Login() {
 
-    const requestToken = (e) => {
+    async function requestToken(e) {
         e.preventDefault()
 
         const form = e.currentTarget;
@@ -14,17 +15,19 @@ export default function Login() {
         }
 
         const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
+    
+        try {
+            await postLogin(
+                formData.get("email"),
+                formData.get("password"),
+                formData.get("isTeacher") === "true",
+            )
+            location.reload()
+        } catch (error) {
+            console.error(error)
+            alert("Los datos de usuario, contraseña o rol no son correctos")
+        }
 
-        console.log(data)
-
-        return axios.post("http://localhost:3000/api/auth/login", data)
-            .then((data) => {
-                console.log(data.data.token)
-                localStorage.setItem("token", data.data.token)
-            }).catch((error) => {
-                console.log(`Error: ${error}`)
-            })
     }
 
     return (

@@ -17,6 +17,10 @@
         }
     }
 
+    & > .full-viewport {
+        grid-column: span 2;
+    }
+
     & > .profile {
     }
 }

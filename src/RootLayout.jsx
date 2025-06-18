@@ -1,9 +1,22 @@
 import { Card, Nav } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 import arania from './assets/Araña.svg'
+import { getLoginInfo } from "./lib/api";
+import Login from "./Login";
 
 export default function RootLayout() {
-    
+    const login = getLoginInfo()
+
+    if (!login) {
+        return (
+            <div className="root-layout">
+                <div className="full-viewport container pt-3">
+                    <Login />
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="root-layout">
             <div className="sidebar sticky-top d-flex flex-column p-2">
@@ -25,7 +38,7 @@ export default function RootLayout() {
                 </Nav>
                 <img src={arania} className="arania" />
             </div>
-            <div className="viewport container pt-3">
+            <div className="container pt-3">
                 <Outlet />
             </div>
         </div>

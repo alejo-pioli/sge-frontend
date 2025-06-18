@@ -25,7 +25,7 @@ export function getLoginInfo() {
 
     return {
         token,
-        id: parseInt(localStorage.getItem(TOKEN_KEY) ?? "0"),
+        id: parseInt(localStorage.getItem(USER_KEY) ?? "0"),
         role: localStorage.getItem(ROLE_KEY) ?? "student",
     }
 }
