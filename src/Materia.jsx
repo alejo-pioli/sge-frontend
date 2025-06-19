@@ -27,27 +27,17 @@ export default function Materia() {
                     <Card>
                         <CardHeader>
                             <h4 className='m-0'>
-                                Calificaciones
+                                Alumnos
                             </h4>
                         </CardHeader>
                         <CardBody>
-                            <Table>
-                                <tr>
-                                    <th>Instancia</th>
-                                    <th>Calif.</th>
-                                </tr>
-                                {calificaciones && calificaciones.map((c) => (
-                                    <tr>
-                                        <td>
-                                            {c.instance}
-                                        </td>
-                                        <td>
-                                            {c.grade}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </Table>
+                            {alumnos?.length ?? 0} {alumnos?.length === 1 ? "alumno" : "alumnos"}
                         </CardBody>
+                        <CardFooter className='d-flex justify-content-end'>
+                            <Button as={Link} to={"/alumnos/" + id}>
+                                Ver más
+                            </Button>
+                        </CardFooter>
                     </Card>
                 </Col>
                 <Col>
@@ -62,26 +52,43 @@ export default function Materia() {
                         </CardBody>
                         <CardFooter className='d-flex justify-content-end'>
                             <Button as={Link} to={`/inasistencias/${id}`}>
-                                Ver más...
+                                Ver más
                             </Button>
                         </CardFooter>
                     </Card>
                 </Col>
             </Row>
             {login.role !== "student" ?
-                <Row>
+                <Row className='mt-4'>
                     <Col>
                         <Card>
                             <CardHeader>
                                 <h4 className='m-0'>
-                                    Alumnos
+                                    Calificaciones
                                 </h4>
                             </CardHeader>
                             <CardBody>
-                                {alumnos?.length ?? 0} {alumnos?.length === 1 ? "alumno" : "alumnos"}
+                                <Table>
+                                    <tr>
+                                        <th>Instancia</th>
+                                        <th>Calificación</th>
+                                    </tr>
+                                    {calificaciones && calificaciones.map((c) => (
+                                        <tr>
+                                            <td>
+                                                {c.instance}
+                                            </td>
+                                            <td>
+                                                {c.grade}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </Table>
                             </CardBody>
-                            <CardFooter>
-                                <Button as={Link} to={"/alumnos/" + id}>Ver más</Button>
+                            <CardFooter className='d-flex justify-content-end'>
+                                <Button as={Link} to={"/calificaciones/" + id}>
+                                    Ver más
+                                </Button>
                             </CardFooter>
                         </Card>
                     </Col>

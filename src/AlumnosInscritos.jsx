@@ -10,7 +10,6 @@ export default function AlumnosInscritos() {
     const { id } = useParams()
 
     const materia = useAPI(getMateria, id) ?? { name: "" }
-    console.log(materia)
     const alumnos = useAPI(getAlumnosInscriptos, id) ?? []
 
     return (
