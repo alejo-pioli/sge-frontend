@@ -8,6 +8,8 @@ import { useLoginInfo } from "./LoginContext"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
 
+/*=== UTILIDADES ===*/
+
 const TOKEN_KEY = "token"
 const EXPIRY_KEY = "expiry"
 const USER_KEY = "user"
@@ -110,10 +112,29 @@ export function params(values) {
  */
 export function logout() {
     if (localStorage.getItem(TOKEN_KEY)) {
+        console.log("logging out")
         localStorage.removeItem(TOKEN_KEY)
         return true
     }
     return false
+}
+
+export function unauthorizedHandler(refresh) {
+    return (err) => {
+        console.error(err)
+    
+        if (err instanceof AxiosError && err.status === 401) {
+            if (logout()) {
+                toast.error("La sesión ha vencido, vuelva a iniciar sesión.", {
+                    position: "top-right",
+                    autoClose: 5000
+                })
+                refresh()
+            }
+        } else {
+            throw err
+        }
+    }
 }
 
 /**
@@ -132,30 +153,28 @@ export function useAPI(fn, ...args) {
         setValue(null)
         fn(...args)
             .then((val) => setValue(val))
-            .catch((err) => {
-                console.error(err)
-
-                if (err instanceof AxiosError && err.status === 401) {
-                    if (logout()) {
-                        toast.error("La sesión ha vencido, vuelva a iniciar sesión.", {
-                            position: "top-right",
-                            autoClose: 5000
-                        })
-                        refresh()
-                    }
-                } else {
-                    // toast.error("Error desconocido: " + err.message, {
-                    //     position: "top-right",
-                    //     autoClose: 5000
-                    // })
-                }
-            })
+            .catch(unauthorizedHandler(refresh))
     }, args)
 
     //console.log({ value })
 
     return value
 }
+
+/*=== CONEXIÓN A ENDPOINTS ===*/
+
+/*== Schemas bonus ==*/
+
+const SubjectWithTeacher = SubjectSchema.extend({
+    Teacher: TeacherSchema
+})
+
+const PostResult = z.object({
+    ok: z.boolean(),
+    id: z.number(),
+})
+
+/*== Autenticación ==*/
 
 /**
  * Inicia sesión
@@ -179,14 +198,7 @@ export async function postLogin(email, password, isTeacher) {
     return null
 }
 
-const SubjectWithTeacher = SubjectSchema.extend({
-    Teacher: TeacherSchema
-})
-
-const PostResult = z.object({
-    ok: z.boolean(),
-    id: z.number(),
-})
+/*== Materias ==*/
 
 /**
  * @param {number} id identificador del usuario
@@ -194,6 +206,12 @@ const PostResult = z.object({
  */
 export async function getMaterias(id, isTeacher) {
     const { data } = await apiGet("/materias" + (isTeacher ? "?docente=" + id : "?alumno=" + id))
+
+    return z.array(SubjectWithTeacher).parse(data)
+}
+
+export async function getTodasLasMaterias() {
+    const { data } = await apiGet("/materias")
 
     return z.array(SubjectWithTeacher).parse(data)
 }
@@ -208,6 +226,36 @@ export async function getMateria(id) {
 }
 
 /**
+ * @param {SubjectSchema} materia la materia
+ */
+export async function postMateria(materia) {
+    const { data } = await apiPost("/materias", materia)
+
+    return PostResult.parse(data)
+}
+
+/**
+ * @param {number} id identificador de la materia
+ */
+export async function getAlumnosInscriptos(id) {
+    const { data } = await apiGet(`/alumnos/?materia=${id}`)
+
+    return z.array(StudentSchema).parse(data)
+}
+
+/**
+ * @param {number} studentID identificador del usuario
+ * @param {number} subjectID identificador de la materia
+ */
+export async function postInscripcion(studentID, subjectID) {
+    const { data } = await apiPost("/inscripciones", { studentID, subjectID})
+
+    return PostResult.parse(data)
+}
+
+/*== Alumnos ==*/
+
+/**
  * @param {number} id 
  */
 export async function getAlumno(id) {
@@ -216,15 +264,7 @@ export async function getAlumno(id) {
     return StudentSchema.parse(data)
 }
 
-/**
- * @param {number} id id de la materia
- */
-export async function getAlumnosInscriptos(id) {
-    const { data } = await apiGet(`/alumnos/?materia=${id}`)
-
-    return z.array(StudentSchema).parse(data)
-}
-
+/*== Asistencia ==*/
 
 /**
  * @param {Omit<AbsenceSchema, "id">} absence 
@@ -284,6 +324,8 @@ export async function getTodasLasInasistencias(subjectID, start, end) {
     return z.array(AbsenceSchema).parse(data)
 }
 
+/*== Calificaciones ==*/
+
 /**
  * @param {number} subjectID 
  * @param {number=} studentID 
@@ -314,6 +356,8 @@ export async function postCalificacion(subjectID, studentID, instance, grade) {
     return PostResult.parse(data)
 }
 
+/*== Docentes ==*/
+
 /**
  * 
  * @param {number} id 
@@ -331,30 +375,13 @@ export async function postDocente(data){
     return await apiPost("/docentes", data)
 }
 
-export async function getTodasLasMaterias() {
-    const { data } = await apiGet("/materias")
+export async function getDocentes(){
+    const { data } = await apiGet("/docentes")
 
-    return z.array(SubjectWithTeacher).parse(data)
+    return z.array(TeacherSchema).parse(data)
 }
 
-/**
- * @param {number} studentID identificador del usuario
- * @param {number} subjectID identificador de la materia
- */
-export async function postInscripcion(studentID, subjectID) {
-    const { data } = await apiPost("/inscripciones", { studentID, subjectID})
-
-    return PostResult.parse(data)
-}
-
-/**
- * @param {SubjectSchema} materia la materia
- */
-export async function postMateria(materia) {
-    const { data } = await apiPost("/materias", materia)
-
-    return PostResult.parse(data)
-}
+/*== Otros ==*/
 
 /**
  * Obtener un usuario genérico, alumno o docente
@@ -379,10 +406,4 @@ export async function getUser(role, id) {
     } else {
         return await getAlumno(id)
     }
-}
-
-export async function getDocentes(){
-    const { data } = await apiGet("/docentes")
-
-    return z.array(TeacherSchema).parse(data)
 }

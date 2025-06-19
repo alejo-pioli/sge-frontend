@@ -1,9 +1,9 @@
-import { Card, CardBody, CardHeader, Container } from 'react-bootstrap'
-import { getMaterias, useAPI } from './lib/api'
+import { Button, Card, CardBody, CardHeader, Container, Table } from 'react-bootstrap'
+import { getMaterias, getTodasLasMaterias, useAPI } from './lib/api'
 import { Link } from 'react-router-dom'
 import { useLoginInfo } from './lib/LoginContext'
 
-export default function Materias() {
+export function MateriasLectura() {
     const [login] = useLoginInfo()
 
     const materias = useAPI(getMaterias, login.id, login.role === "teacher")
@@ -29,4 +29,52 @@ export default function Materias() {
             </Container>
         </>
     )
+}
+
+export function MateriasAdmin() {
+    const [login] = useLoginInfo()
+
+    const materias = useAPI(getTodasLasMaterias)
+
+    return (
+        <>
+            <h1>Administrar materias</h1>
+            <Table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Profesor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {materias && materias.length > 0 && (
+                        materias.map((m) => (
+                            <tr>
+                                <td>{m.name}</td>
+                                <td>{m.Teacher.name} {m.Teacher.surname}</td>
+                                <td>
+                                    <Button variant="danger">
+                                        Borrar
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </Table>
+            <Container fluid className="materias">
+            </Container>
+        </>
+    )
+}
+
+export default function Materias() {
+    const [login] = useLoginInfo()
+
+    if (login.role === "admin") {
+        return <MateriasAdmin />
+    } else {
+        return <MateriasLectura />
+    }
 }

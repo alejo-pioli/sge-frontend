@@ -23,14 +23,14 @@ export default function CrearMateria() {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
-        if (!data.teacherID && id.role==="teacher"){
+        if (!data.teacherID && login.role === "teacher"){
             data.teacherID = login.id
         }
 
         data.teacherID = parseInt(data.teacherID)
         data.duration = parseInt(data.duration)
 
-        const datos = await postMateria(data)
+        const datos = await postMateria(data).catch(unauthorizedHandler(refresh))
         console.log(datos)
         if(datos.ok){
             form.reset()
