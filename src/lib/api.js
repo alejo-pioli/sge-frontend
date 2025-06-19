@@ -220,6 +220,15 @@ export async function postMateria(materia) {
 }
 
 /**
+ * @param {number} id la materia
+ */
+export async function deleteMateria(id) {
+    const { data } = await apiDelete(`/materias/${id}`)
+
+    return data
+}
+
+/**
  * @param {number} id identificador de la materia
  */
 export async function getAlumnosInscriptos(id) {
