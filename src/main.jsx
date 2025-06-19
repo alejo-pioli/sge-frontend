@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import CrearDocente from './CrearDocente.jsx'
 import RootLayout from './RootLayout.jsx'
 import './style/index.css'
-import Login from './Login.jsx'
 import CrearMateria from './CrearMateria.jsx'
 import InscripcionAMateria from './InscripcionAMateria.jsx'
 import Materias from './Materias.jsx'
@@ -14,6 +13,7 @@ import Materia from './Materia.jsx'
 import { LoginProvider } from './lib/LoginContext.jsx'
 import { ToastContainer } from 'react-toastify'
 import DatosPersonales from './DatosPersonales.jsx'
+import Inasistencias from './Inasistencias.jsx'
 
 const router = createBrowserRouter([
   {
@@ -21,6 +21,7 @@ const router = createBrowserRouter([
       { path: "/", element: <App /> },
       { path: "/materias", element: <Materias /> },
       { path: "/materias/:id", element: <Materia /> },
+      { path: "/inasistencias/:id", element: <Inasistencias /> },
       { path: "/crear-alumno", element: <CrearAlumno /> },
       { path: "/crear-docente", element: <CrearDocente /> },
       { path: "/crear-materia", element: <CrearMateria /> },
@@ -28,7 +29,6 @@ const router = createBrowserRouter([
       { path: "/perfil", element: <DatosPersonales /> },
     ]
   },
-  { path: "login", element: <Login /> },
 ])
 
 createRoot(document.getElementById('root')).render(
@@ -37,5 +37,5 @@ createRoot(document.getElementById('root')).render(
       <RouterProvider router={router} />
     </LoginProvider>
     <ToastContainer draggable={false} />
-  </StrictMode>,
+  </StrictMode>
 )
