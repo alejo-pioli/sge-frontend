@@ -363,7 +363,18 @@ export async function postMateria(materia) {
  * @returns {Promise<TeacherSchema | StudentSchema>}
  */
 export async function getUser(role, id) {
-    if (role === "teacher") {
+    if (role === "admin") {
+        return {
+            id: 0,
+            career: "Z",
+            dni: 0,
+            email: "admin@admin.com",
+            password: "",
+            name: "El",
+            surname: "Admin",
+            phone: ""
+        }
+    } else if (role === "teacher") {
         return await getDocente(id)
     } else {
         return await getAlumno(id)

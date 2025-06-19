@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Col, Container, Form, FormCheck, NavDropdown, Row, Tab, Table } from 'react-bootstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, Col, Container, Form, FormCheck, NavDropdown, OverlayTrigger, Popover, Row, Tab, Table } from 'react-bootstrap'
 import { deleteInasistencia, getAlumnosInscriptos, getCalificaciones, getInasistencias, getMateria, getMaterias, getTodasLasInasistencias, postInasistencia, putInasistencia, useAPI } from './lib/api'
 import { Link, useParams } from 'react-router-dom'
 import { useLoginInfo } from './lib/LoginContext'
@@ -114,26 +114,37 @@ function InasistenciasDocentes(props) {
 
     if (!materia) return null
 
+    const popover = (
+        <Popover className='date-sel'>
+            <Popover.Body>
+                <DayPicker
+                    animate
+                    mode="single"
+                    selected={fecha}
+                    onSelect={setFecha}
+                />
+            </Popover.Body>
+        </Popover>
+    );
+
     return (
         <>
             <h1><Link to={`/materias/${id}`}>{materia.name}</Link></h1>
             <h4>Inasistencias</h4>
-
-            <Row>
-                <Col>
-                    <DayPicker
-                        animate
-                        mode="single"
-                        selected={fecha}
-                        onSelect={setFecha}
-                    />
-                </Col>
-                <Col>
-                    <Button onClick={subir}>
-                        Subir
+            <div className="d-flex justify-content-between p-2">
+                <OverlayTrigger trigger="click" placement="right-start" overlay={popover}>
+                    <Button variant="outline-dark">
+                        {fecha.toLocaleDateString("es-AR", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                        })}
                     </Button>
-                </Col>
-            </Row>
+                </OverlayTrigger>
+                <Button onClick={subir}>
+                    Subir
+                </Button>
+            </div>
             {alumnos && inasistencias && (
                 <Table>
                     <thead>
