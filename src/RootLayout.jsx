@@ -47,9 +47,17 @@ export default function RootLayout() {
                             Crear materia
                         </Nav.Link>
                     ) : login.role === "admin" ? (
-                        <Nav.Link as={Link} to={"/crear-docente"}>
-                            Agregar docente
-                        </Nav.Link>
+                        <>
+                            <Nav.Link as={Link} to={"/crear-materia"}>
+                                Crear materia
+                            </Nav.Link>
+                            <Nav.Link as={Link} to={"/crear-docente"}>
+                                Agregar docente
+                            </Nav.Link>
+                            <Nav.Link as={Link} to={"/crear-alumno"}>
+                                Agregar alumno
+                            </Nav.Link>
+                        </>
                     ) : (
                         <Nav.Link as={Link} to={"/inscripcion"}>
                             Inscripciones
