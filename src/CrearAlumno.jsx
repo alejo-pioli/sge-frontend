@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import { postAlumno } from './lib/api';
+import { postAlumno, unauthorizedHandler } from './lib/api';
+import { useLoginInfo } from './lib/LoginContext';
 
 export default function CrearAlumno() {
+    const [_, refresh] = useLoginInfo()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +24,7 @@ export default function CrearAlumno() {
         const datos = await postAlumno(data).catch(unauthorizedHandler(refresh))
         console.log(datos)
         if(datos.ok){
-            form.reset()
+            e.target.reset()
         }
     };
 
