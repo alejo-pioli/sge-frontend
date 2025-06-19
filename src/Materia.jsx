@@ -12,11 +12,12 @@ export default function Materia() {
 
     const calificaciones = useAPI(getCalificaciones, id, login.id)
     const inasistencias = useAPI(getInasistencias, id, login.id)
+    const alumnos = useAPI(getAlumnosInscriptos, id) ?? []
 
     if (!materia) {
         return null
-    } 
-    
+    }
+
     return (
         <>
             <h1>{materia.name}</h1>
@@ -67,6 +68,26 @@ export default function Materia() {
                     </Card>
                 </Col>
             </Row>
+            {login.role !== "student" ?
+                <Row>
+                    <Col>
+                        <Card>
+                            <CardHeader>
+                                <h4 className='m-0'>
+                                    Alumnos
+                                </h4>
+                            </CardHeader>
+                            <CardBody>
+                                {alumnos?.length ?? 0} {alumnos?.length === 1 ? "alumno" : "alumnos"}
+                            </CardBody>
+                            <CardFooter>
+                                <Button as={Link} to={"/alumnos/" + id}>Ver más</Button>
+                            </CardFooter>
+                        </Card>
+                    </Col>
+                    <Col></Col>
+                </Row>
+                : <></>}
         </>
     )
 }

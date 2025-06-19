@@ -6,7 +6,7 @@ import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useLoginInfo } from "./lib/LoginContext";
 
-function carrerToString(value) {
+export function careerToString(value) {
     return value === "A" ? "Ingeniería en Sistemas de Información" :
            value === "B" ? "Ingeniería Química" :
            value === "C" ? "Ingeniería Electrónica" :
@@ -41,7 +41,7 @@ export default function DatosPersonales() {
                     </tr>
                     <tr>
                         <th>Carrera</th>
-                        <td>{carrerToString(datos.career)}</td>
+                        <td>{careerToString(datos.career)}</td>
                     </tr>
                 </tbody>
             </Table>

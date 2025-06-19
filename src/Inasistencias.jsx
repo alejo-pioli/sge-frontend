@@ -19,6 +19,8 @@ const hoy = new Date()
 function InasistenciasDocentes(props) {
     const [login] = useLoginInfo()
 
+    const { id } = useParams()
+
     const [fecha, setFecha] = useState(hoy)
 
     const [start, end] = useMemo(() => {
@@ -114,7 +116,7 @@ function InasistenciasDocentes(props) {
 
     return (
         <>
-            <h1>{materia.name}</h1>
+            <h1><Link to={`/materias/${id}`}>{materia.name}</Link></h1>
             <h4>Inasistencias</h4>
 
             <Row>
@@ -174,6 +176,8 @@ function InasistenciasDocentes(props) {
 function InasistenciasAlumnos(props) {
     const [login] = useLoginInfo()
 
+    const { id } = useParams()
+
     const materia = useAPI(getMateria, props.id)
     const inasistencias = useAPI(getInasistencias, props.id, login.id)
 
@@ -181,7 +185,7 @@ function InasistenciasAlumnos(props) {
 
     return (
         <>
-            <h1>{materia.name}</h1>
+            <h1><Link to={`/materias/${id}`}>{materia.name}</Link></h1>
             <h4>Inasistencias</h4>
             <Table>
                 <thead>

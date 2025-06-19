@@ -14,6 +14,7 @@ import { LoginProvider } from './lib/LoginContext.jsx'
 import { ToastContainer } from 'react-toastify'
 import DatosPersonales from './DatosPersonales.jsx'
 import Inasistencias from './Inasistencias.jsx'
+import AlumnosInscritos from './AlumnosInscritos.jsx'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/crear-materia", element: <CrearMateria /> },
       { path: "/inscripcion", element: <InscripcionAMateria /> },
       { path: "/perfil", element: <DatosPersonales /> },
+      { path: "/alumnos/:id", element: <AlumnosInscritos /> }
     ]
   },
 ])
