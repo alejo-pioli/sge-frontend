@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { postAlumno } from './lib/api';
 
 export default function CrearAlumno() {
 
@@ -18,14 +19,10 @@ export default function CrearAlumno() {
 
         data.dni = parseInt(data.dni)
 
-        try {
-            const response = await axios.post("http://localhost:3000/api/alumnos", data, {headers: {
-      "Authorization": "Bearer " + localStorage.getItem("token")
-    }});
-            console.log('Success:', response.data);
-            e.target.reset()
-        } catch (error) {
-            console.error('Error:', error);
+        const datos = await postAlumno(data).catch(unauthorizedHandler(refresh))
+        console.log(datos)
+        if(datos.ok){
+            form.reset()
         }
     };
 
