@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { Form, Row, Col, Button, InputGroup } from "react-bootstrap"
-import { getDocentes, postMateria, useAPI } from "./lib/api"
+import { getDocentes, postMateria, unauthorizedHandler, useAPI } from "./lib/api"
 import { useLoginInfo } from "./lib/LoginContext"
 
 export default function CrearMateria() {
-    const [login] = useLoginInfo()
+    const [login, refresh] = useLoginInfo()
 
     const docentes = useAPI(getDocentes) ?? []
 
@@ -32,7 +32,7 @@ export default function CrearMateria() {
         const datos = await postMateria(data).catch(unauthorizedHandler(refresh))
         console.log(datos)
         if(datos.ok){
-            form.reset()
+            e.target.reset()
         }
     }
 

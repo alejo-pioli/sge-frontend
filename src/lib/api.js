@@ -42,19 +42,22 @@ export function getLoginInfo() {
     }
 }
 
+const api = axios.create({
+    baseURL: "http://localhost:3000/api"
+})
+
+const getHeaders = (auth) => (
+     auth ? {
+        "Authorization": "Bearer " + getLoginInfo()?.token
+    } : {}
+)
 
 /**
  * Hace un GET a un endpoint de la API
  * @param {string} path la ruta relativa a /api (ej. /login)
  * @param {boolean} auth si requiere autenticarse con el token
  */
-export async function apiGet(path, auth = true) {
-    return await axios.get("http://localhost:3000/api" + path, {
-        headers: auth ? {
-            "Authorization": "Bearer " + getLoginInfo()?.token
-        } : {}
-    })
-}
+export const apiGet = (path, auth = true) => api.get(path, { headers: getHeaders(auth) })
 
 /**
  * Hace un POST a un endpoint de la API
@@ -62,13 +65,7 @@ export async function apiGet(path, auth = true) {
  * @param {any} data los datos
  * @param {boolean} auth si requiere autenticarse con el token
  */
-export async function apiPost(path, data, auth = true) {
-    return await axios.post("http://localhost:3000/api" + path, data, {
-        headers: auth ? {
-            "Authorization": "Bearer " + getLoginInfo()?.token
-        } : {}
-    })
-}
+export const apiPost = (path, data, auth = true) => api.post(path, data, { headers: getHeaders(auth) })
 
 /**
  * Hace un PUT a un endpoint de la API
@@ -76,26 +73,14 @@ export async function apiPost(path, data, auth = true) {
  * @param {any} data los datos
  * @param {boolean} auth si requiere autenticarse con el token
  */
-export async function apiPut(path, data, auth = true) {
-    return await axios.put("http://localhost:3000/api" + path, data, {
-        headers: auth ? {
-            "Authorization": "Bearer " + getLoginInfo()?.token
-        } : {}
-    })
-}
+export const apiPut = (path, data, auth = true) => api.put(path, data, { headers: getHeaders(auth) })
 
 /**
- * Hace un PUT a un endpoint de la API
+ * Hace un DELETE a un endpoint de la API
  * @param {string} path la ruta relativa a /api (ej. /login)
  * @param {boolean} auth si requiere autenticarse con el token
  */
-export async function apiDelete(path, auth = true) {
-    return await axios.delete("http://localhost:3000/api" + path, {
-        headers: auth ? {
-            "Authorization": "Bearer " + getLoginInfo()?.token
-        } : {}
-    })
-}
+export const apiDelete = (path, auth = true) => api.delete(path, { headers: getHeaders(auth) })
 
 /**
  * @param {Record<string, string | undefined>} values 
@@ -235,6 +220,15 @@ export async function postMateria(materia) {
 }
 
 /**
+ * @param {number} id la materia
+ */
+export async function deleteMateria(id) {
+    const { data } = await apiDelete(`/materias/${id}`)
+
+    return data
+}
+
+/**
  * @param {number} id identificador de la materia
  */
 export async function getAlumnosInscriptos(id) {
@@ -262,6 +256,15 @@ export async function getAlumno(id) {
     const { data } = await apiGet(`/alumnos/${id}`)
 
     return StudentSchema.parse(data)
+}
+
+/**
+ * @param {StudentSchema} alumno el alumno
+ */
+export async function postAlumno(alumno) {
+    const { data } = await apiPost("/alumnos", alumno)
+
+    return PostResult.parse(data)
 }
 
 /*== Asistencia ==*/

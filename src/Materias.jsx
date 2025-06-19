@@ -1,7 +1,10 @@
 import { Button, Card, CardBody, CardHeader, Container, Table } from 'react-bootstrap'
-import { getMaterias, getTodasLasMaterias, useAPI } from './lib/api'
+import { deleteMateria, getMaterias, getTodasLasMaterias, useAPI } from './lib/api'
 import { Link } from 'react-router-dom'
 import { useLoginInfo } from './lib/LoginContext'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { SubjectSchema } from './lib/schema'
 
 export function MateriasLectura() {
     const [login] = useLoginInfo()
@@ -36,6 +39,18 @@ export function MateriasAdmin() {
 
     const materias = useAPI(getTodasLasMaterias)
 
+    const [realMaterias, setRealMaterias] = useState(/** @type {SubjectSchema[]} */ ([]))
+
+    useEffect(() => {
+        setRealMaterias(materias ?? [])
+    }, [materias])
+
+    async function del(id) {
+        await deleteMateria(id)
+        
+        setRealMaterias(realMaterias.filter((m) => m.id !== id))
+    }
+
     return (
         <>
             <h1>Administrar materias</h1>
@@ -48,13 +63,13 @@ export function MateriasAdmin() {
                     </tr>
                 </thead>
                 <tbody>
-                    {materias && materias.length > 0 && (
-                        materias.map((m) => (
+                    {realMaterias.length > 0 && (
+                        realMaterias.map((m) => (
                             <tr>
                                 <td>{m.name}</td>
                                 <td>{m.Teacher.name} {m.Teacher.surname}</td>
                                 <td>
-                                    <Button variant="danger">
+                                    <Button onClick={() => del(m.id)} variant="danger">
                                         Borrar
                                     </Button>
                                 </td>

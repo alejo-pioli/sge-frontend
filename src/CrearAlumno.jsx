@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { postAlumno, unauthorizedHandler } from './lib/api';
+import { useLoginInfo } from './lib/LoginContext';
 
 export default function CrearAlumno() {
+    const [_, refresh] = useLoginInfo()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,14 +21,10 @@ export default function CrearAlumno() {
 
         data.dni = parseInt(data.dni)
 
-        try {
-            const response = await axios.post("http://localhost:3000/api/alumnos", data, {headers: {
-      "Authorization": "Bearer " + localStorage.getItem("token")
-    }});
-            console.log('Success:', response.data);
+        const datos = await postAlumno(data).catch(unauthorizedHandler(refresh))
+        console.log(datos)
+        if(datos.ok){
             e.target.reset()
-        } catch (error) {
-            console.error('Error:', error);
         }
     };
 
