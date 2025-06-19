@@ -1,13 +1,15 @@
 import { Card, Nav } from "react-bootstrap";
 import { Links, Outlet } from "react-router-dom";
 import arania from './assets/Araña.svg'
-import { getAlumno, getLoginInfo, useAPI, getDocente } from "./lib/api";
+import { getAlumno, useAPI, getDocente } from "./lib/api";
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
+import { Component } from "react";
+import { useLoginInfo } from "./lib/LoginContext";
 
 export default function RootLayout() {
-    const login = getLoginInfo()
+    const [login] = useLoginInfo()
 
     if (!login) {
         return (
@@ -20,7 +22,7 @@ export default function RootLayout() {
     }
 
     let method
-    if (login.role = "teacher"){
+    if (login.role === "teacher"){
         method = getDocente
     }
     else {
@@ -31,8 +33,8 @@ export default function RootLayout() {
     console.log(datos)
 
     return (
-        login.role === "teacher" ?
-            <div className="root-layout">
+        <div className="root-layout">
+            {login.role === "teacher" ?(
                 <div className="sidebar sticky-top d-flex flex-column p-2">
                     <Card className="profile bg-primary text-white px-3 py-2">
                         <div className="fs-5">{datos.name} {datos.surname}</div>
@@ -52,12 +54,7 @@ export default function RootLayout() {
                     </Nav>
                     <img src={arania} className="arania" />
                 </div>
-                <div className="container pt-3">
-                    <Outlet />
-                </div>
-            </div>
-            :
-            <div className="root-layout">
+            ) : (
                 <div className="sidebar sticky-top d-flex flex-column p-2">
                     <Card className="profile bg-primary text-white px-3 py-2">
                         <div className="fs-5">{datos.name} {datos.surname}</div>
@@ -77,39 +74,10 @@ export default function RootLayout() {
                     </Nav>
                     <img src={arania} className="arania" />
                 </div>
-                <div className="container pt-3">
-                    <Outlet />
-                </div>
+            )}
+            <div className="container pt-3">
+                <Outlet />
             </div>
+        </div>
     )
-}
-
-
-class ErrorBoundary extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { loginError: false };
-    }
-
-    static getDerivedStateFromError(error) {
-        return { loginError: error instanceof AxiosError && error.status === 401};
-    }
-
-    componentDidCatch(error, info) {
-        
-    }
-
-    render() {
-        if (this.state.loginError) {
-            return (
-                <div className="root-layout">
-                    <div className="full-viewport container pt-3">
-                        <Login />
-                    </div>
-                </div>
-            );
-        }
-
-        return this.props.children;
-    }
 }

@@ -1,10 +1,11 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Container } from 'react-bootstrap'
-import { getLoginInfo, getMaterias, getTodasLasMaterias, postInscripcion, useAPI } from './lib/api'
+import { getMaterias, getTodasLasMaterias, postInscripcion, useAPI } from './lib/api'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { useLoginInfo } from './lib/LoginContext'
 
 export default function InscripcionAMateria() {
-    const login = getLoginInfo()
+    const [login] = useLoginInfo()
 
     const inscriptas = useAPI(getMaterias, login.id, login.role === "teacher")
 

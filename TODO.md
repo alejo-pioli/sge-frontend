@@ -1,0 +1,3 @@
+- [ ] Validar los cuerpos del backend
+- [ ] Mostrar Login cuando hay errores de autorización
+- [ ] Validar teléfono

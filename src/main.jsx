@@ -10,12 +10,16 @@ import Login from './Login.jsx'
 import CrearMateria from './CrearMateria.jsx'
 import InscripcionAMateria from './InscripcionAMateria.jsx'
 import Materias from './Materias.jsx'
+import Materia from './Materia.jsx'
+import { LoginProvider } from './lib/LoginContext.jsx'
+import { ToastContainer } from 'react-toastify'
 
 const router = createBrowserRouter([
   {
     path: "/", element: <RootLayout />, children: [
       { path: "/", element: <App /> },
       { path: "/materias", element: <Materias /> },
+      { path: "/materias/:id", element: <Materia /> },
       { path: "/crear-alumno", element: <CrearAlumno /> },
       { path: "/crear-docente", element: <CrearDocente /> },
       { path: "/crear-materia", element: <CrearMateria /> },
@@ -27,6 +31,9 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <LoginProvider>
+      <RouterProvider router={router} />
+    </LoginProvider>
+    <ToastContainer draggable={false} />
   </StrictMode>,
 )

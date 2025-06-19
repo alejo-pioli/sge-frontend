@@ -2,10 +2,12 @@ import { Form, Button, Row, Col } from "react-bootstrap"
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import { postLogin } from "./lib/api";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useLoginInfo } from "./lib/LoginContext";
 
 
 export default function Login() {
+    const [_, refresh] = useLoginInfo()
 
     async function requestToken(e) {
         e.preventDefault()
@@ -30,10 +32,7 @@ export default function Login() {
                 autoClose: 5000
             });
 
-            setTimeout(() => {
-                location.reload();
-            }, 2000);
-
+            refresh()
         } catch (error) {
             console.error(error)
             toast.error("Usuario, contraseña o rol incorrectos", {
@@ -83,7 +82,6 @@ export default function Login() {
                 </Button>
             </Form>
             <Link to={"/"}><Button variant="secondary">Menú</Button></Link>
-            <ToastContainer draggable={false} />
         </div>
     )
 }

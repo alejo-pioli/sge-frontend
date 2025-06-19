@@ -1,8 +1,10 @@
 import { Card, CardBody, CardHeader, Container } from 'react-bootstrap'
-import { getLoginInfo, getMaterias, useAPI } from './lib/api'
+import { getMaterias, useAPI } from './lib/api'
+import { Link } from 'react-router-dom'
+import { useLoginInfo } from './lib/LoginContext'
 
 export default function Materias() {
-    const login = getLoginInfo()
+    const [login] = useLoginInfo()
 
     const materias = useAPI(getMaterias, login.id, login.role === "teacher")
 
@@ -12,7 +14,7 @@ export default function Materias() {
             <Container fluid className="materias">
                 {materias && materias.length > 0 && (
                     materias.map((m) => (
-                        <Card key={m.id}>
+                        <Card as={Link} to={"/materias/" + m.id} key={m.id}>
                             <CardHeader>
                                 <h4 className='m-0'>
                                     {m.name}

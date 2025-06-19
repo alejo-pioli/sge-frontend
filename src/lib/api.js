@@ -11,8 +11,15 @@ const USER_KEY = "user"
 const ROLE_KEY = "role"
 
 /**
+ * @typedef {object} LoginInfo
+ * @prop {string} token
+ * @prop {number} id
+ * @prop {string} role
+ */
+
+/**
  * Devuelve el token si todavía no expiro
- * @returns el token
+ * @returns {LoginInfo | null}
  */
 export function getLoginInfo() {
     const expiry = parseInt(localStorage.getItem(EXPIRY_KEY) ?? "0")
@@ -29,6 +36,7 @@ export function getLoginInfo() {
         role: localStorage.getItem(ROLE_KEY) ?? "student",
     }
 }
+
 
 /**
  * Hace un GET a un endpoint de la API
