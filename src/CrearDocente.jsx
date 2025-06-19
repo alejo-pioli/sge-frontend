@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import { postDocente } from './lib/api';
+import { postDocente, unauthorizedHandler } from './lib/api';
+import { useLoginInfo } from './lib/LoginContext';
 
 export default function CrearDocente() {
+    const [_, refresh] = useLoginInfo()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,8 +21,11 @@ export default function CrearDocente() {
 
         data.dni = parseInt(data.dni)
 
-        const datos = await postDocente(data)
+        const datos = await postDocente(data).catch(unauthorizedHandler(refresh))
         console.log(datos)
+        if(datos.ok){
+            form.reset()
+        }
     };
 
     return (
