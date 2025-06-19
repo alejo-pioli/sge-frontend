@@ -1,4 +1,3 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { Form, Row, Col, Button, InputGroup } from "react-bootstrap"
 import { getDocentes, postMateria, useAPI } from "./lib/api"
