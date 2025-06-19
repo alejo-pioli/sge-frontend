@@ -9,6 +9,8 @@ export default function CrearMateria() {
 
     const docentes = useAPI(getDocentes) ?? []
 
+    const [docente, setDocente] = useState(login.role === "teacher" ? login.id.toString() : "0" ?? "0")
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -53,8 +55,9 @@ export default function CrearMateria() {
                             <Form.Label>Docente</Form.Label>
                             <Form.Select
                                 name="teacherID"
-                                value={login.role === "teacher" ? login.id.toString() : "0" ?? "0"}
-                                aria-readonly={login.role === "teacher" ?? true}
+                                value={docente}
+                                onChange={(e) => setDocente(e.target.value)}
+                                disabled={login.role === "teacher"}
                                 required
                             >
                                 <option disabled value="0">
