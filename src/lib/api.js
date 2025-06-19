@@ -152,7 +152,7 @@ export function useAPI(fn, ...args) {
             })
     }, args)
 
-    console.log({ value })
+    //console.log({ value })
 
     return value
 }
@@ -368,4 +368,10 @@ export async function getUser(role, id) {
     } else {
         return await getAlumno(id)
     }
+}
+
+export async function getDocentes(){
+    const { data } = await apiGet("/docentes")
+
+    return z.array(TeacherSchema).parse(data)
 }

@@ -20,7 +20,6 @@ export default function RootLayout() {
     }
 
     const datos = useAPI(getUser, login.role, login.id) ?? { name: "...", surname: "", dni: 0 }
-    console.log(datos)
 
     function cerrarSesion() {
         logout()

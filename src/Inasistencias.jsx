@@ -38,7 +38,7 @@ function InasistenciasDocentes(props) {
     const inasistenciasMap = useMemo(() => {
         return inasistencias && new Map(inasistencias.map((v) => [v.studentID, v]))
     }, [inasistencias])
-    
+
     const isPresent = useCallback((id) => {
         if (cambios.has(id)) {
             return !cambios.get(id)
@@ -46,7 +46,7 @@ function InasistenciasDocentes(props) {
             return !inasistenciasMap?.has(id)
         }
     }, [cambios, inasistenciasMap])
-    
+
     const isJustified = useCallback((id) => {
         const cambio = cambios.get(id)
         if (cambio) {
@@ -55,10 +55,10 @@ function InasistenciasDocentes(props) {
             return !!inasistenciasMap?.get(id)?.justified
         }
     }, [cambios, inasistenciasMap])
-    
+
     const onPresentClick = useCallback((e, id) => {
         if (!(e.target instanceof HTMLInputElement)) return
-        
+
         if (e.target.checked) {
             cambios.set(id, false)
         } else {
@@ -73,10 +73,10 @@ function InasistenciasDocentes(props) {
 
         setCambios(new Map(cambios))
     })
-    
+
     const onJustifiedClick = useCallback((e, id) => {
         if (!(e.target instanceof HTMLInputElement)) return
-        
+
         cambios.set(id, {
             ...(cambios.get(id) || inasistenciasMap.get(id) || {}),
             date: fecha,
@@ -107,7 +107,7 @@ function InasistenciasDocentes(props) {
         await Promise.all(ops)
         console.log("ok")
     }, [cambios, inasistenciasMap])
-    
+
     console.log(cambios)
 
     if (!materia) return null
@@ -191,16 +191,23 @@ function InasistenciasAlumnos(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {inasistencias.map((c) => (
-                        <tr>
-                            <td>
-                                {c.date}
-                            </td>
-                            <td>
-                                {c.justified ? "Justificada" : "No justificada"}
-                            </td>
-                        </tr>
-                    ))}
+                    {inasistencias.map((c) => {
+                        const fecha = new Date(c.date)
+                        return (
+                            <tr>
+                                <td>
+                                    {fecha.toLocaleDateString("es-AR", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                    })}
+                                </td>
+                                <td>
+                                    {c.justified ? "Justificada" : "No justificada"}
+                                </td>
+                            </tr>
+                        )
+                    })}
                 </tbody>
             </Table>
         </>
@@ -213,7 +220,7 @@ export default function Inasistencias() {
     const params = useParams()
 
     const id = parseInt(params.id)
-    
+
     if (login.role === "teacher") {
         return <InasistenciasDocentes id={id} />
     } else {
