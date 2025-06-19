@@ -1,7 +1,7 @@
 import { Card, Nav } from "react-bootstrap";
 import { Links, Outlet } from "react-router-dom";
 import arania from './assets/Araña.svg'
-import { getAlumno, useAPI, getDocente } from "./lib/api";
+import { getAlumno, useAPI, getDocente, logout } from "./lib/api";
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
@@ -9,7 +9,7 @@ import { Component } from "react";
 import { useLoginInfo } from "./lib/LoginContext";
 
 export default function RootLayout() {
-    const [login] = useLoginInfo()
+    const [login, refresh] = useLoginInfo()
 
     if (!login) {
         return (
@@ -31,6 +31,11 @@ export default function RootLayout() {
 
     const datos = useAPI(method, login.id) || { name: "...", surname: "", dni: 0 }
     console.log(datos)
+
+    function cerrarSesion() {
+        logout()
+        refresh()
+    }
 
     return (
         <div className="root-layout">
@@ -68,7 +73,7 @@ export default function RootLayout() {
                             Inscripciones
                         </Nav.Link>
                         <div className="flex-grow-1"></div>
-                        <Nav.Link className="link-danger">
+                        <Nav.Link as="button" onClick={cerrarSesion} className="text-start link-danger">
                             Cerrar sesión
                         </Nav.Link>
                     </Nav>

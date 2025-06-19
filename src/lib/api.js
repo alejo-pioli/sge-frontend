@@ -4,6 +4,9 @@ import { useEffect } from "react"
 import { z } from "zod/v4"
 import { AbsenceSchema, GradeSchema, LoginResult, StudentSchema, SubjectSchema, TeacherSchema } from "./schema"
 import { useState } from "react"
+import { useLoginInfo } from "./LoginContext"
+import { AxiosError } from "axios"
+import { toast } from "react-toastify"
 
 const TOKEN_KEY = "token"
 const EXPIRY_KEY = "expiry"
@@ -66,6 +69,17 @@ export async function apiPost(path, data, auth = true) {
 }
 
 /**
+ * Cerrar sesión
+ */
+export function logout() {
+    if (localStorage.getItem(TOKEN_KEY)) {
+        localStorage.removeItem(TOKEN_KEY)
+        return true
+    }
+    return false
+}
+
+/**
  * @template {any[]} A
  * @template R
  * @param {(...args: A) => Promise<R>} fn 
@@ -74,10 +88,31 @@ export async function apiPost(path, data, auth = true) {
  */
 export function useAPI(fn, ...args) {
     const [value, setValue] = useState(/** @type {R | null} */(null))
+    
+    const [_, refresh] = useLoginInfo()
 
     useEffect(() => {
         setValue(null)
-        fn(...args).then((val) => setValue(val)).catch((err) => console.error(err))
+        fn(...args)
+            .then((val) => setValue(val))
+            .catch((err) => {
+                console.error(err)
+
+                if (err instanceof AxiosError && err.status === 401) {
+                    if (logout()) {
+                        toast.error("La sesión ha vencido, vuelva a iniciar sesión.", {
+                            position: "top-right",
+                            autoClose: 5000
+                        })
+                        refresh()
+                    }
+                } else {
+                    // toast.error("Error desconocido: " + err.message, {
+                    //     position: "top-right",
+                    //     autoClose: 5000
+                    // })
+                }
+            })
     }, args)
 
     console.log({ value })

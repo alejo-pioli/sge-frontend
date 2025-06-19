@@ -27,7 +27,7 @@ export default function Login() {
                 formData.get("isTeacher") === "true",
             );
 
-            toast.success("Inicio sesion exitoso", {
+            toast.success("Inicio sesion exitoso!", {
                 position: "top-right",
                 autoClose: 5000
             });
@@ -35,7 +35,7 @@ export default function Login() {
             refresh()
         } catch (error) {
             console.error(error)
-            toast.error("Usuario, contraseña o rol incorrectos", {
+            toast.error("Usuario, contraseña o rol incorrectos.", {
                 position: "top-right",
                 autoClose: 5000
             });
