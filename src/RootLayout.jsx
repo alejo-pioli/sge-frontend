@@ -29,18 +29,26 @@ export default function RootLayout() {
     return (
         <div className="root-layout">
             <div className="sidebar sticky-top d-flex flex-column p-2">
-                <Card className="profile bg-primary text-white px-3 py-2">
+                <Card bg={login.role === "admin" ? "danger" : "primary"} className="profile text-white px-3 py-2">
                     <Link to={"/perfil"} className="stretched-link" />
                     <div className="fs-5">{datos.name} {datos.surname}</div>
-                    <small>DNI {datos.dni}</small>
+                    {login.role === "admin" ? (
+                        <small>(modo administrador)</small>
+                    ) : (
+                        <small>DNI {datos.dni}</small>
+                    )}
                 </Card>
                 <Nav className="nav-pills flex-column flex-grow-1">
                         <Nav.Link as={Link} to={"/materias"}>
                             Materias
                         </Nav.Link>
-                    {login.role === "teacher" ?(
+                    {login.role === "teacher" ? (
                         <Nav.Link as={Link} to={"/crear-materia"}>
                             Crear materia
+                        </Nav.Link>
+                    ) : login.role === "admin" ? (
+                        <Nav.Link as={Link} to={"/crear-docente"}>
+                            Agregar docente
                         </Nav.Link>
                     ) : (
                         <Nav.Link as={Link} to={"/inscripcion"}>
