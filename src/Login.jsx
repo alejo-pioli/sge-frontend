@@ -44,9 +44,20 @@ export default function Login() {
     }
 
     return (
-        <div className="container pt-3">
+        <>
             <h1>Iniciar sesión</h1>
             <Form autoComplete="off" onSubmit={requestToken}>
+                <Form.Group className="mb-3" controlId="role">
+                    <Form.Label>Rol</Form.Label>
+                    <Form.Select
+                        name="isTeacher"
+                        defaultValue="false"
+                        required>
+                        <option value="false">Alumno</option>
+                        <option value="true">Docente</option>
+                    </Form.Select>
+                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
@@ -65,23 +76,10 @@ export default function Login() {
                         required />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="role">
-                    <Form.Label>Role</Form.Label>
-                    <Form.Select
-                        name="isTeacher"
-                        defaultValue=""
-                        required>
-                        <option disabled value="">Seleccione rol...</option>
-                        <option value="false">Alumno</option>
-                        <option value="true">Docente</option>
-                    </Form.Select>
-                </Form.Group>
-
                 <Button variant="primary" type="submit">
                     Enviar
                 </Button>
             </Form>
-            <Link to={"/"}><Button variant="secondary">Menú</Button></Link>
-        </div>
+        </>
     )
 }

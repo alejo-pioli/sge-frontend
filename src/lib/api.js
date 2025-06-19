@@ -69,6 +69,43 @@ export async function apiPost(path, data, auth = true) {
 }
 
 /**
+ * Hace un PUT a un endpoint de la API
+ * @param {string} path la ruta relativa a /api (ej. /login)
+ * @param {any} data los datos
+ * @param {boolean} auth si requiere autenticarse con el token
+ */
+export async function apiPut(path, data, auth = true) {
+    return await axios.put("http://localhost:3000/api" + path, data, {
+        headers: auth ? {
+            "Authorization": "Bearer " + getLoginInfo()?.token
+        } : {}
+    })
+}
+
+/**
+ * Hace un PUT a un endpoint de la API
+ * @param {string} path la ruta relativa a /api (ej. /login)
+ * @param {boolean} auth si requiere autenticarse con el token
+ */
+export async function apiDelete(path, auth = true) {
+    return await axios.delete("http://localhost:3000/api" + path, {
+        headers: auth ? {
+            "Authorization": "Bearer " + getLoginInfo()?.token
+        } : {}
+    })
+}
+
+/**
+ * @param {Record<string, string | undefined>} values 
+ */
+export function params(values) {
+    return new URLSearchParams(
+        //@ts-expect-error
+        Object.entries(values).filter(([key, value]) => value != undefined)
+    ).toString()
+}
+
+/**
  * Cerrar sesión
  */
 export function logout() {
@@ -190,15 +227,30 @@ export async function getAlumnosInscriptos(id) {
 
 
 /**
- * @param {number} subjectID 
- * @param {number} studentID 
+ * @param {Omit<AbsenceSchema, "id">} absence 
  */
-export async function postInasistencia(subjectID, studentID) {
-    const { data } = await apiPost(`/inasistencias`, {
-        studentID, subjectID, date: new Date().toISOString(), justified: false
-    })
+export async function postInasistencia(absence) {
+    const { data } = await apiPost(`/inasistencias`, absence)
 
     return PostResult.parse(data)
+}
+
+/**
+ * @param {AbsenceSchema} absence 
+ */
+export async function putInasistencia(absence) {
+    const { data } = await apiPut(`/inasistencias/${absence.id}`, absence)
+
+    return PostResult.parse(data)
+}
+
+/**
+ * @param {number} id 
+ */
+export async function deleteInasistencia(id) {
+    const { data } = await apiDelete(`/inasistencias/${id}`)
+
+    return data
 }
 
 /**
@@ -213,6 +265,21 @@ export async function getInasistencias(subjectID, studentID) {
         params.set("alumno", "" + studentID)
     }
     const { data } = await apiGet(`/inasistencias?` + params.toString())
+
+    return z.array(AbsenceSchema).parse(data)
+}
+
+/**
+ * @param {number} subjectID 
+ * @param {Date=} start 
+ * @param {Date=} end 
+ */
+export async function getTodasLasInasistencias(subjectID, start, end) {
+    const { data } = await apiGet(`/inasistencias?` + params({
+        materia: subjectID.toString(),
+        start: start?.toISOString(),
+        end: end?.toISOString(),
+    }))
 
     return z.array(AbsenceSchema).parse(data)
 }

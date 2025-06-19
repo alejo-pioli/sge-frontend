@@ -1,11 +1,9 @@
 import { Card, Nav } from "react-bootstrap";
-import { Links, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import arania from './assets/Araña.svg'
 import { useAPI, logout, getUser } from "./lib/api";
 import Login from "./Login";
 import { Link } from "react-router-dom";
-import { AxiosError } from "axios";
-import { Component } from "react";
 import { useLoginInfo } from "./lib/LoginContext";
 
 export default function RootLayout() {
@@ -14,7 +12,7 @@ export default function RootLayout() {
     if (!login) {
         return (
             <div className="root-layout">
-                <div className="full-viewport container pt-3">
+                <div className="full-viewport container pt-4">
                     <Login />
                 </div>
             </div>
