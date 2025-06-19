@@ -23,7 +23,9 @@ export default function CrearMateria() {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
-        console.log(data)
+        if (!data.teacherID && id.role==="teacher"){
+            data.teacherID = login.id
+        }
 
         data.teacherID = parseInt(data.teacherID)
         data.duration = parseInt(data.duration)
