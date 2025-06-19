@@ -171,13 +171,12 @@ export async function getMateria(id) {
 }
 
 /**
- * 
  * @param {number} id 
  */
 export async function getAlumno(id) {
     const { data } = await apiGet(`/alumnos/${id}`)
 
-    return data
+    return StudentSchema.parse(data)
 }
 
 /**
@@ -255,7 +254,7 @@ export async function postCalificacion(subjectID, studentID, instance, grade) {
 export async function getDocente(id) {
     const { data } = await apiGet(`/docentes/${id}`)
 
-    return data
+    return TeacherSchema.parse(data)
 }
 
 /**
@@ -288,4 +287,18 @@ export async function postMateria(materia) {
     const { data } = await apiPost("/materias", materia)
 
     return PostResult.parse(data)
+}
+
+/**
+ * Obtener un usuario genérico, alumno o docente
+ * @param {string} role 
+ * @param {number} id 
+ * @returns {Promise<TeacherSchema | StudentSchema>}
+ */
+export async function getUser(role, id) {
+    if (role === "teacher") {
+        return await getDocente(id)
+    } else {
+        return await getAlumno(id)
+    }
 }
