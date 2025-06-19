@@ -24,7 +24,7 @@ export default function CrearDocente() {
         const datos = await postDocente(data).catch(unauthorizedHandler(refresh))
         console.log(datos)
         if(datos.ok){
-            form.reset()
+            e.target.reset()
         }
     };
 
