@@ -58,43 +58,40 @@ export default function Materia() {
                     </Card>
                 </Col>
             </Row>
-            {login.role !== "student" ?
-                <Row className='mt-4'>
-                    <Col>
-                        <Card>
-                            <CardHeader>
-                                <h4 className='m-0'>
-                                    Calificaciones
-                                </h4>
-                            </CardHeader>
-                            <CardBody>
-                                <Table>
+            <Row className='mt-4'>
+                <Col>
+                    <Card>
+                        <CardHeader>
+                            <h4 className='m-0'>
+                                Calificaciones
+                            </h4>
+                        </CardHeader>
+                        <CardBody>
+                            {login.role === "student" ? <Table>
+                                <tr>
+                                    <th>Instancia</th>
+                                    <th>Calificación</th>
+                                </tr>
+                                {calificaciones && calificaciones.map((c) => (
                                     <tr>
-                                        <th>Instancia</th>
-                                        <th>Calificación</th>
+                                        <td>
+                                            {c.instance}
+                                        </td>
+                                        <td>
+                                            {c.grade}
+                                        </td>
                                     </tr>
-                                    {calificaciones && calificaciones.map((c) => (
-                                        <tr>
-                                            <td>
-                                                {c.instance}
-                                            </td>
-                                            <td>
-                                                {c.grade}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </Table>
-                            </CardBody>
-                            <CardFooter className='d-flex justify-content-end'>
-                                <Button as={Link} to={"/calificaciones/" + id}>
-                                    Ver más
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </Col>
-                    <Col></Col>
-                </Row>
-                : <></>}
+                                ))}</Table> : "Revisar o agregar calificaciones"}
+                        </CardBody>
+                        <CardFooter className='d-flex justify-content-end'>
+                            <Button as={Link} to={"/calificaciones/" + id}>
+                                Ver más
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </Col>
+                <Col></Col>
+            </Row>
         </>
     )
 }

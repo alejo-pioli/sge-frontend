@@ -1,21 +1,29 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { useLoginInfo } from "./lib/LoginContext"
-import { useAPI, getMateria, getAlumnosInscriptos, postCalificacion } from "./lib/api"
+import { useAPI, getMateria, getAlumnosInscriptos, postCalificacion, getCalificaciones, unauthorizedHandler } from "./lib/api"
 import { Button, Form, Table } from "react-bootstrap"
 import { useCallback, useState } from "react"
 
 export default function CargarCalificaciones() {
     const [login] = useLoginInfo()
     const { id } = useParams()
+    const navigate = useNavigate()
 
     const materia = useAPI(getMateria, id) ?? { name: "" }
     const alumnos = useAPI(getAlumnosInscriptos, id) ?? []
 
-    const subir = () => {
+    const subir = async () => {
         const instancia = document.getElementById("instancia").value
         const notaInputs = Array.from(document.getElementsByClassName("nota"));
         const values = notaInputs.map(i => { return { studentID: i.id, grade: i.value } });
+
+        values.forEach(async (val) => {
+            const datos = await postCalificacion(parseInt(id), parseInt(val.studentID), instancia, parseInt(val.grade))
+            console.log(datos)
+        })
+
+        navigate("/calificaciones/" + id)
     }
 
     return (
@@ -25,7 +33,7 @@ export default function CargarCalificaciones() {
             <Form.Group className="pt-3">
                 <Form.Label><strong><h3 className="m-0">Instancia Evaluativa</h3></strong></Form.Label>
                 <Form.Control
-                id="instancia"
+                    id="instancia"
                     type="text"
                     placeholder="Parcial"
                     required>

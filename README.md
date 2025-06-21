@@ -1,4 +1,8 @@
-Falta implementar:
--Cargar calificaciones
--Ver calificaciones
--Modificar calificaciones
+SISTEMA DE GESTIÓN ESTUDIANTIL
+
+Integrantes: Bovero, Cézar, Pioli
+
+
+----- Credenciales administrador -----
+Email: admin@admin.com
+Contraseña: admin

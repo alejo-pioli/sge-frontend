@@ -16,6 +16,7 @@ import DatosPersonales from './DatosPersonales.jsx'
 import Inasistencias from './Inasistencias.jsx'
 import AlumnosInscritos from './AlumnosInscritos.jsx'
 import CargarCalificaciones from './CargarCalificaciones.jsx'
+import Calificaciones from './Calificaciones.jsx'
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
       { path: "/inscripcion", element: <InscripcionAMateria /> },
       { path: "/perfil", element: <DatosPersonales /> },
       { path: "/alumnos/:id", element: <AlumnosInscritos /> },
-      { path: "/calificaciones/:id", element: <CargarCalificaciones /> },
+      { path: "/cargar-calificaciones/:id", element: <CargarCalificaciones /> },
+      { path: "/calificaciones/:id", element: <Calificaciones /> }
     ]
   },
 ])
