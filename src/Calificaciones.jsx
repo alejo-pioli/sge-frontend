@@ -1,6 +1,6 @@
 import { useLoginInfo } from "./lib/LoginContext"
 import { useParams } from "react-router-dom"
-import { useAPI, getCalificaciones, getMateria, getAlumnosInscriptos } from "./lib/api"
+import { useAPI, getCalificaciones, getMateria, getAlumnosInscriptos, putCalificacion, deleteCalificacion } from "./lib/api"
 import { Link } from "react-router-dom"
 import { Table, Form, Button } from "react-bootstrap"
 import { useState } from "react"
@@ -9,9 +9,11 @@ export function CalificacionesDocentes() {
     const [login] = useLoginInfo()
     const { id } = useParams()
 
+    const [editMode, setEditMode] = useState(false)
+
     const materia = useAPI(getMateria, id) ?? { name: "" }
     const alumnos = useAPI(getAlumnosInscriptos, id) ?? []
-    const notas = useAPI(getCalificaciones, id) ?? []
+    let notas = useAPI(getCalificaciones, id) ?? []
 
     const [instance, setInstance] = useState("")
 
@@ -37,13 +39,62 @@ export function CalificacionesDocentes() {
         console.log(notas)
     }
 
+    const edit = () => {
+        const instancia = document.getElementById("instancia").value
+
+        if (!instancia) {
+            return
+        }
+
+        setEditMode(true)
+    }
+
+    const saveEdit = async () => {
+
+        const instancia = document.getElementById("instancia").value
+        const notaInputs = Array.from(document.getElementsByClassName("nota"))
+        const values = notaInputs.map(i => { return { gradeID: i.id, grade: i.value } })
+
+        values.forEach(async (val) => {
+            const nota = notas.find(n => n.id == val.gradeID)
+            console.log(nota)
+
+            if (nota.grade == val.grade) {
+                console.log("Es igual")
+                return
+            } else if (!val.grade) {
+                console.log("Borrando " + nota.id)
+                const datos = await deleteCalificacion(nota.id)
+                console.log(datos)
+                return
+            }
+
+            nota.grade = parseInt(val.grade)
+            nota.id = parseInt(nota.id)
+            const datos = await putCalificacion(nota)
+            console.log(datos)
+        })
+
+        notas = await getCalificaciones(id)
+        console.log(notas)
+        setEditMode(false)
+        show()
+    }
+
     return (
         <>
             <h1>Calificaciones de <Link to={`/materias/${id}`}>{materia.name}</Link></h1>
             <div className="d-flex justify-content-end mb-1">
                 <Button as={Link} to={`/cargar-calificaciones/${id}`}>
-                    Cargar Calificación
+                    Crear nueva instancia
                 </Button>
+                {editMode ?
+                    <Button onClick={saveEdit} className="ms-4">
+                        Cargar
+                    </Button> :
+                    <Button onClick={edit} className="ms-4">
+                        Editar
+                    </Button>}
             </div>
             <Form.Group controlId="teacherID">
                 <Form.Label>Instancia</Form.Label>
@@ -79,9 +130,22 @@ export function CalificacionesDocentes() {
                             <td>
                                 {c.dni}
                             </td>
-                            <td className="grade" id={c.gradeID}>
-                                <strong>{c.grade}</strong>
-                            </td>
+                            {editMode ?
+                                <td>
+                                    {c.grade ? <Form.Group>
+                                        <Form.Control
+                                            id={c.gradeID}
+                                            defaultValue={c.grade}
+                                            className="nota"
+                                            type="number"
+                                            min="1"
+                                            max="10">
+                                        </Form.Control>
+                                    </Form.Group> : ""}
+                                </td> :
+                                <td className="grade" id={c.gradeID}>
+                                    <strong>{c.grade}</strong>
+                                </td>}
                         </tr>
                     ))}
                 </tbody>

@@ -359,6 +359,24 @@ export async function postCalificacion(subjectID, studentID, instance, grade) {
     return PostResult.parse(data)
 }
 
+/**
+ * @param {GradeSchema} grade 
+ */
+export async function putCalificacion(grade) {
+    const { data } = await apiPut(`/calificaciones/${grade.id}`, grade)
+
+    return PostResult.parse(data)
+}
+
+/**
+ * @param {number} id 
+ */
+export async function deleteCalificacion(id) {
+    const { data } = await apiDelete(`/calificaciones/${id}`)
+
+    return data
+}
+
 /*== Docentes ==*/
 
 /**
